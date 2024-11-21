@@ -1,0 +1,50 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+contract Token {
+
+ string public name = "SampleToken";
+
+ string public symbol = "STK";
+
+ uint8 public decimals = 18;
+
+ uint256 public totalSupply;
+
+ mapping(address => uint256) public balanceOf;
+
+ address public owner;
+
+ event Transfer(address indexed from, address indexed to, uint256 value);
+
+ constructor(uint256 _initialSupply) {
+
+ totalSupply = _initialSupply * (10 ** uint256(decimals));
+
+ balanceOf[msg.sender] = totalSupply;
+
+ owner = msg.sender; }
+modifier onlyOwner() {
+
+ require(msg.sender == owner, "Only the owner can perform this action"); }
+
+ function transfer(address recipient, uint256 amount) public onlyOwner returns 
+
+(bool) {
+
+ require(recipient != address(0), "Invalid address");
+
+ require(balanceOf[owner] >= amount, "Insufficient balance");
+
+ balanceOf[owner] -= amount;
+
+ balanceOf[recipient] += amount;
+
+ emit Transfer(owner, recipient, amount);
+
+ return true;
+
+ }
+
+}
